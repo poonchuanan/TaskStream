@@ -21,9 +21,16 @@ public class Main {
 
         System.out.println("Total number of deadlines: " + countDeadlines(tasksData));
 
+
+        printDeadlinesUsingStream(tasksData);
+
+        for(Task t:filterByString(tasksData, "11")){
+            System.out.println(t);
+        }
+
         //printDataUsingStreams(tasksData);
 
-        printDeadlineUsingStreams(tasksData);
+        //printDeadlineUsingStreams(tasksData);
 
         System.out.println("Total number of deadlines using streams: " + countDeadlineUsingStream(tasksData));
 
@@ -69,11 +76,28 @@ public class Main {
         }
     }
 
-    public static void printDeadlineUsingStreams(ArrayList<Task> taskData){
-        System.out.println("Printing deadline using stream:");
-        taskData.stream()
-                .filter((t) -> t instanceof Deadline)
-                .forEach(System.out::println);
 
+    public static void printDeadlinesUsingStream(ArrayList<Task> tasksData){
+        System.out.println("Printing deadline using stream:");
+        tasksData.stream()
+                .filter((s) -> s instanceof Deadline)
+                .sorted((a, b) -> a.getDescription().toLowerCase().compareTo(b.getDescription().toLowerCase()))
+                .forEach(System.out::println);
+    }
+
+    public static ArrayList<Task> filterByString(ArrayList<Task> tasksData, String filterString){
+        ArrayList<Task> filteredTaskList = (ArrayList<Task>) tasksData.stream()
+                .filter((s) -> s.getDescription().contains(filterString))
+                .collect(Collectors.toList());
+
+        return filteredTaskList;
+//=======
+//    public static void printDeadlineUsingStreams(ArrayList<Task> taskData){
+//        System.out.println("Printing deadline using stream:");
+//        taskData.stream()
+//                .filter((t) -> t instanceof Deadline)
+//                .forEach(System.out::println);
+//
+//>>>>>>> master
     }
 }
